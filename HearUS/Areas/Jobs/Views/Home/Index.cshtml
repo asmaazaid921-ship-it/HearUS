@@ -1,0 +1,75 @@
+@model JobsIndexViewModel
+@{
+    ViewData["Title"] = "فرص العمل";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">فرص العمل</h1>
+        <p class="text-muted mb-0">وظائف مهيّأة وميسّرة تدعم ذوي الهمم.</p>
+    </div>
+
+    <form class="d-flex gap-2" asp-area="Jobs" asp-controller="Home" asp-action="Index" method="get">
+        <input class="form-control" name="search" value="@Model.Search" placeholder="ابحث بالوظيفة أو الشركة..." />
+        <button class="btn btn-primary text-nowrap" type="submit">بحث</button>
+    </form>
+</div>
+
+@if (Model.Items.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <h2 class="h5 fw-bold mb-2">لا توجد فرص مطابقة</h2>
+            <p class="text-muted mb-0">
+                @(string.IsNullOrWhiteSpace(Model.Search) ? "لم تُنشر فرص عمل بعد." : "جرّب كلمة بحث أخرى.")
+            </p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var job in Model.Items)
+        {
+            <div class="col-md-6 col-xl-4">
+                <article class="card border-0 shadow-sm h-100 feature-card">
+                    <div class="card-body d-flex flex-column p-4">
+                        <h2 class="h5 fw-bold mb-1">@job.Title</h2>
+                        <p class="text-muted small mb-2">@job.CompanyName</p>
+
+                        <div class="d-flex flex-wrap gap-2 mb-3 small">
+                            @if (!string.IsNullOrWhiteSpace(job.Location))
+                            {
+                                <span class="badge job-badge">@job.Location</span>
+                            }
+                            @if (job.IsRemote)
+                            {
+                                <span class="badge job-badge">عن بُعد</span>
+                            }
+                            @if (job.IsAccessibilityFriendly)
+                            {
+                                <span class="badge text-bg-success">مهيّأة لذوي الهمم</span>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(job.SignVideoUrl))
+                            {
+                                <span class="badge sign-video-badge">بلغة الإشارة</span>
+                            }
+                        </div>
+
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            @(job.Description.Length > 120 ? job.Description[..120] + "..." : job.Description)
+                        </p>
+
+                        <div class="d-flex justify-content-between align-items-center small">
+                            <span class="text-muted">@TimeAgo.Format(job.PostedAt)</span>
+                            <a class="fw-semibold" asp-area="Jobs" asp-controller="Home" asp-action="Details"
+                               asp-route-id="@job.Id">التفاصيل</a>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+
+    <partial name="_Pager" model="Model.Pager" />
+}

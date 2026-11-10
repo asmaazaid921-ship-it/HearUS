@@ -1,0 +1,32 @@
+@model JobFormViewModel
+@{
+    ViewData["Title"] = "تعديل الوظيفة";
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="d-flex justify-content-between align-items-end gap-2 mb-4">
+            <div>
+                <h1 class="h3 fw-bold mb-1">تعديل الوظيفة</h1>
+                <p class="text-muted mb-0">حدّث التفاصيل أو حالة النشر.</p>
+            </div>
+            <a class="btn btn-sm btn-outline-secondary" asp-area="Admin" asp-controller="Jobs" asp-action="Index">
+                إدارة الوظائف
+            </a>
+        </div>
+
+        <div class="card border-0 shadow-sm">
+            <div class="card-body p-4">
+                <form asp-area="Admin" asp-controller="Jobs" asp-action="Edit" asp-route-id="@Model.Id"
+                      method="post" novalidate>
+                    <partial name="_JobForm" model="Model" />
+                    <button type="submit" class="btn btn-primary px-4 mt-4">حفظ التعديلات</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

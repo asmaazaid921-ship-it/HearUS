@@ -1,0 +1,135 @@
+﻿@{
+    ViewData["Title"] = "الرئيسية";
+}
+
+<section class="hero mb-5">
+    <div class="row align-items-center g-4">
+        <div class="col-lg-8">
+            <span class="badge hero-badge rounded-pill mb-3 px-3 py-2">منصة مجتمعية دامجة</span>
+            <h1 class="display-5 fw-bold mb-3">صوتنا… مساحة تُسمع فيها التجارب</h1>
+            <p class="lead mb-4">
+                مجتمع واحد يجمع أصحاب التجربة والمهتمين بقضايا الصم وذوي الهمم:
+                حائط مشترك للتفاعل، ركن خاص لتجاربهم، دردشة لحظية، وفرص عمل مهيّأة —
+                وكل منشور يمكن أن يرافقه فيديو بلغة الإشارة.
+            </p>
+            <div class="d-flex flex-wrap gap-2">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <a class="btn btn-light btn-lg fw-semibold" asp-area="Community" asp-controller="Home" asp-action="Index">اذهب إلى المجتمع</a>
+                    <a class="btn btn-outline-light btn-lg" asp-area="Account" asp-controller="Account" asp-action="Profile">ملفي الشخصي</a>
+                }
+                else
+                {
+                    <a class="btn btn-light btn-lg fw-semibold" asp-area="Account" asp-controller="Account" asp-action="Register">انضم إلينا الآن</a>
+                    <a class="btn btn-outline-light btn-lg" asp-area="Account" asp-controller="Account" asp-action="Login">تسجيل الدخول</a>
+                }
+            </div>
+        </div>
+        <div class="col-lg-4 text-lg-start">
+            <div class="bg-white bg-opacity-10 border border-light border-opacity-25 rounded-4 p-4">
+                <p class="mb-1 small text-uppercase opacity-75">مبدأ المنصة</p>
+                <p class="mb-0 fw-semibold">
+                    التجربة يُرويها صاحبها، والمجتمع كله يسمع ويساند.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mb-5">
+    <div class="d-flex align-items-end justify-content-between mb-4">
+        <div>
+            <h2 class="h3 fw-bold mb-1">أقسام صوتنا</h2>
+            <p class="text-muted mb-0">خمس مساحات تكمل بعضها لتجربة مجتمعية واحدة بلغة مفهومة للجميع.</p>
+        </div>
+    </div>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-5 g-4">
+        <div class="col">
+            <a class="card feature-card border-0 shadow-sm h-100 text-decoration-none text-reset"
+               asp-area="Community" asp-controller="Home" asp-action="Index">
+                <div class="card-body p-4">
+                    <span class="feature-icon mb-3">م</span>
+                    <h3 class="h6 fw-bold mb-2">الحائط المشترك</h3>
+                    <p class="text-muted small mb-0">بوستات وتعليقات وإعجابات لكل أعضاء المجتمع.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card feature-card border-0 shadow-sm h-100 text-decoration-none text-reset"
+               asp-area="Insights" asp-controller="Home" asp-action="Index">
+                <div class="card-body p-4">
+                    <span class="feature-icon mb-3">ص</span>
+                    <h3 class="h6 fw-bold mb-2">ركن صوتهم</h3>
+                    <p class="text-muted small mb-0">تجارب ومقالات ينشرها أصحاب التجربة أنفسهم.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card feature-card border-0 shadow-sm h-100 text-decoration-none text-reset"
+               asp-area="Signs" asp-controller="Home" asp-action="Index">
+                <div class="card-body p-4">
+                    <span class="feature-icon mb-3">إ</span>
+                    <h3 class="h6 fw-bold mb-2">قاموس الإشارة</h3>
+                    <p class="text-muted small mb-0">مصطلحات بلغة الإشارة مع فيديو توضيحي لكل مصطلح.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card feature-card border-0 shadow-sm h-100 text-decoration-none text-reset"
+               asp-area="Chat" asp-controller="Home" asp-action="Index">
+                <div class="card-body p-4">
+                    <span class="feature-icon mb-3">د</span>
+                    <h3 class="h6 fw-bold mb-2">الدردشة اللحظية</h3>
+                    <p class="text-muted small mb-0">محادثات فردية فورية دون إعادة تحميل الصفحة.</p>
+                </div>
+            </a>
+        </div>
+        <div class="col">
+            <a class="card feature-card border-0 shadow-sm h-100 text-decoration-none text-reset"
+               asp-area="Jobs" asp-controller="Home" asp-action="Index">
+                <div class="card-body p-4">
+                    <span class="feature-icon mb-3">و</span>
+                    <h3 class="h6 fw-bold mb-2">فرص العمل</h3>
+                    <p class="text-muted small mb-0">وظائف مهيّأة وميسّرة تدعم ذوي الهمم.</p>
+                </div>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="mb-4">
+    <h2 class="h3 fw-bold mb-4">لمن هذه المنصة؟</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-bold">أصحاب التجربة</h3>
+                    <p class="text-muted small mb-0">
+                        فئة موثوقة تنشر في «ركن صوتهم» وتشارك تجربتها الحقيقية مع المجتمع.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-bold">المجتمع</h3>
+                    <p class="text-muted small mb-0">
+                        أعضاء يشاركون، يتفاعلون، ويساندون التجارب المنشورة في الحائط المشترك.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body p-4">
+                    <h3 class="h6 fw-bold">جهات التوظيف</h3>
+                    <p class="text-muted small mb-0">
+                        فرص عمل مهيّأة تُعرض في قسم الوظائف وتصل لمن يحتاجها فعلاً.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

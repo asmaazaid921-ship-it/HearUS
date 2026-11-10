@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../HearUS.Application/HearUS.Application.csproj" />
+  <Project Path="../HearUS.Domain/HearUS.Domain.csproj" />
+  <Project Path="../HearUS.Infrastructure/HearUS.Infrastructure.csproj" />
+  <Project Path="HearUS.csproj" />
+</Solution>

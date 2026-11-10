@@ -1,0 +1,30 @@
+@model PagerViewModel
+
+@if (Model.TotalPages > 1)
+{
+    var start = Math.Max(1, Model.Page - 2);
+    var end = Math.Min(Model.TotalPages, start + 4);
+    start = Math.Max(1, end - 4);
+
+    <nav aria-label="تنقل بين الصفحات" class="mt-4">
+        <ul class="pagination justify-content-center">
+            <li class="page-item @(Model.Page <= 1 ? "disabled" : string.Empty)">
+                <a class="page-link" asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action"
+                   asp-all-route-data="Model.RouteValues" asp-route-page="@(Model.Page - 1)">السابق</a>
+            </li>
+
+            @for (var p = start; p <= end; p++)
+            {
+                <li class="page-item @(p == Model.Page ? "active" : string.Empty)">
+                    <a class="page-link" asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action"
+                       asp-all-route-data="Model.RouteValues" asp-route-page="@p">@p</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.Page >= Model.TotalPages ? "disabled" : string.Empty)">
+                <a class="page-link" asp-area="@Model.Area" asp-controller="@Model.Controller" asp-action="@Model.Action"
+                   asp-all-route-data="Model.RouteValues" asp-route-page="@(Model.Page + 1)">التالي</a>
+            </li>
+        </ul>
+    </nav>
+}

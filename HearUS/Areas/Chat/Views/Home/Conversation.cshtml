@@ -1,0 +1,60 @@
+@model ConversationViewModel
+@{
+    ViewData["Title"] = $"محادثة مع {Model.OtherName}";
+}
+
+<nav aria-label="مسار التنقل" class="mb-3">
+    <ol class="breadcrumb small mb-0">
+        <li class="breadcrumb-item">
+            <a asp-area="Chat" asp-controller="Home" asp-action="Index">الدردشة</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.OtherName</li>
+    </ol>
+</nav>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex align-items-center gap-3">
+        <div class="avatar-circle">@Model.OtherInitial</div>
+        <div>
+            <div class="fw-semibold">@Model.OtherName</div>
+            <div class="small text-muted" id="chatStatus">جارٍ الاتصال بالدردشة اللحظية...</div>
+        </div>
+    </div>
+
+    <div class="card-body chat-thread p-3 p-md-4" id="chatThread"
+         data-conversation-id="@Model.ConversationId"
+         data-current-user-id="@Model.CurrentUserId">
+        @if (Model.Messages.Count == 0)
+        {
+            <p class="text-center text-muted small my-4" id="chatEmptyHint">ابدأ المحادثة برسالة ترحيبية.</p>
+        }
+
+        @foreach (var message in Model.Messages)
+        {
+            var isOwn = message.SenderId == Model.CurrentUserId;
+            <div class="d-flex mb-2 @(isOwn ? "justify-content-start" : "justify-content-end")">
+                <div class="chat-bubble @(isOwn ? "chat-bubble-own" : "chat-bubble-other")">
+                    <div class="small fw-semibold mb-1">@message.SenderName</div>
+                    <div>@message.Content</div>
+                    <div class="small opacity-75 mt-1 text-end">@message.SentAt.ToLocalTime().ToString("HH:mm")</div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="card-footer bg-white py-3">
+        <form asp-area="Chat" asp-controller="Messages" asp-action="Send" method="post" id="chatForm">
+            <input type="hidden" name="conversationId" value="@Model.ConversationId" />
+            <div class="input-group">
+                <input id="chatInput" name="content" class="form-control" maxlength="2000" autocomplete="off"
+                       placeholder="اكتب رسالتك..." aria-label="نص الرسالة" required />
+                <button type="submit" class="btn btn-primary px-4">إرسال</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/signalr/signalr.min.js"></script>
+    <script src="~/js/chat.js" asp-append-version="true"></script>
+}

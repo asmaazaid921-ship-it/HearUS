@@ -1,0 +1,97 @@
+@model AdminDashboardViewModel
+@{
+    ViewData["Title"] = "لوحة الإدارة";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">لوحة الإدارة</h1>
+        <p class="text-muted mb-0">نظرة سريعة على حركة المنصة.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a class="btn btn-primary" asp-area="Admin" asp-controller="Jobs" asp-action="Create">أضف وظيفة</a>
+        <a class="btn btn-outline-primary" asp-area="Admin" asp-controller="Jobs" asp-action="Index">إدارة الوظائف</a>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted small mb-1">أعضاء المنصة</p>
+                <p class="display-6 fw-bold mb-0">@Model.UsersCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted small mb-1">منشورات المجتمع</p>
+                <p class="display-6 fw-bold mb-0">@Model.PostsCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted small mb-1">مقالات ركن صوتهم</p>
+                <p class="display-6 fw-bold mb-0">@Model.PublishedInsightsCount</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-xl-3">
+        <div class="card border-0 shadow-sm h-100">
+            <div class="card-body">
+                <p class="text-muted small mb-1">وظائف منشورة</p>
+                <p class="display-6 fw-bold mb-0">@Model.ActiveJobsCount</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-header bg-white py-3 d-flex justify-content-between align-items-center">
+        <h2 class="h6 fw-bold mb-0">أحدث الوظائف</h2>
+        <a class="small fw-semibold" asp-area="Admin" asp-controller="Jobs" asp-action="Index">عرض الكل</a>
+    </div>
+
+    @if (Model.LatestJobs.Count == 0)
+    {
+        <div class="card-body text-muted">لا توجد وظائف مضافة بعد.</div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>الوظيفة</th>
+                        <th>الشركة</th>
+                        <th>الحالة</th>
+                        <th>تاريخ الإضافة</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var job in Model.LatestJobs)
+                    {
+                        <tr>
+                            <td class="fw-semibold">@job.Title</td>
+                            <td class="text-muted">@job.CompanyName</td>
+                            <td>
+                                @if (job.IsActive)
+                                {
+                                    <span class="badge text-bg-success">منشورة</span>
+                                }
+                                else
+                                {
+                                    <span class="badge text-bg-secondary">موقوفة</span>
+                                }
+                            </td>
+                            <td class="text-muted small">@job.PostedAt.ToString("d MMMM yyyy")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

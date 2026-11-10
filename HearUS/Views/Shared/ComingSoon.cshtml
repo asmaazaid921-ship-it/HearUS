@@ -1,0 +1,10 @@
+@{
+    ViewData["Title"] = ViewData["Title"] ?? "قريباً";
+}
+
+<div class="coming-soon">
+    <span class="badge text-bg-primary rounded-pill px-3 py-2 mb-3">قيد التنفيذ</span>
+    <h1 class="h3 fw-bold mb-3">@ViewData["Title"]</h1>
+    <p class="text-muted mb-4">@ViewData["Description"]</p>
+    <a class="btn btn-outline-primary" asp-area="" asp-controller="Home" asp-action="Index">العودة للرئيسية</a>
+</div>

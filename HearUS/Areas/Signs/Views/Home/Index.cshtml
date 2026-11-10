@@ -1,0 +1,94 @@
+@model SignsIndexViewModel
+@{
+    ViewData["Title"] = "قاموس الإشارة";
+
+    var categories = new (SignCategory? Value, string Label)[]
+    {
+        (null, "الكل"),
+        (SignCategory.Alphabet, "الأبجدية"),
+        (SignCategory.Numbers, "الأرقام"),
+        (SignCategory.DailyLife, "الحياة اليومية"),
+        (SignCategory.Health, "الصحة"),
+        (SignCategory.Work, "العمل"),
+        (SignCategory.Emotions, "المشاعر"),
+        (SignCategory.Other, "أخرى")
+    };
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <h1 class="h3 fw-bold mb-1">قاموس الإشارة</h1>
+        <p class="text-muted mb-0">إشارات موثّقة بالفيديو لتعلّم اللغة التي يستخدمها الصم.</p>
+    </div>
+    @if (Model.CanManage)
+    {
+        <a class="btn btn-primary" asp-area="Signs" asp-controller="Terms" asp-action="Create">أضف إشارة</a>
+    }
+</div>
+
+<form class="row g-2 mb-4" asp-area="Signs" asp-controller="Home" asp-action="Index" method="get">
+    <div class="col-md-8">
+        <label for="signSearch" class="form-label small text-muted">ابحث في القاموس</label>
+        <input id="signSearch" class="form-control" name="search" value="@Model.Search"
+               placeholder="ابحث بكلمة أو عبارة..." />
+    </div>
+    <div class="col-md-4 d-flex align-items-end">
+        <button class="btn btn-primary w-100" type="submit">بحث</button>
+    </div>
+</form>
+
+<ul class="nav nav-pills flex-wrap gap-2 mb-4">
+    @foreach (var (value, label) in categories)
+    {
+        var isActive = Model.Category == value;
+        <li class="nav-item">
+            <a class="nav-link @(isActive ? "active" : "text-muted")"
+               asp-area="Signs" asp-controller="Home" asp-action="Index"
+               asp-route-category="@value" asp-route-search="@Model.Search">@label</a>
+        </li>
+    }
+</ul>
+
+@if (Model.Items.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <h2 class="h5 fw-bold mb-2">لا توجد إشارات مطابقة</h2>
+            <p class="text-muted mb-3">
+                @(string.IsNullOrWhiteSpace(Model.Search) && Model.Category is null
+                    ? "لم تُضف إشارات بعد. يضيفها أصحاب التجربة لبناء قاموس موثوق."
+                    : "جرّب كلمة بحث أخرى أو اختر تصنيفاً مختلفاً.")
+            </p>
+            @if (Model.CanManage)
+            {
+                <a class="btn btn-primary" asp-area="Signs" asp-controller="Terms" asp-action="Create">أضف أول إشارة</a>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var term in Model.Items)
+        {
+            <div class="col-sm-6 col-xl-4">
+                <article class="card border-0 shadow-sm h-100 feature-card">
+                    <div class="card-body d-flex flex-column p-4">
+                        <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+                            <span class="badge sign-video-badge">@term.Category.ToArabicName()</span>
+                            <span class="small text-muted">@TimeAgo.Format(term.CreatedAt)</span>
+                        </div>
+                        <h2 class="h5 fw-bold mb-2">@term.Term</h2>
+                        <p class="text-muted small flex-grow-1 mb-3">
+                            @(string.IsNullOrWhiteSpace(term.Description) ? "إشارة موثّقة بالفيديو." : term.Description)
+                        </p>
+                        <a class="fw-semibold" asp-area="Signs" asp-controller="Home" asp-action="Details"
+                           asp-route-id="@term.Id">شاهد الإشارة</a>
+                    </div>
+                </article>
+            </div>
+        }
+    </div>
+}
+
+<partial name="_Pager" model="Model.Pager" />

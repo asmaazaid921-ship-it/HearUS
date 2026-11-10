@@ -1,0 +1,146 @@
+@model FeedViewModel
+@{
+    ViewData["Title"] = "الحائط المشترك";
+}
+
+<div class="mb-4">
+    <h1 class="h3 fw-bold mb-1">الحائط المشترك</h1>
+    <p class="text-muted mb-0">تشارك، تفاعل، وكن جزءاً من المجتمع.</p>
+</div>
+
+@if (Model.IsComposerVisible)
+{
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body p-3 p-md-4">
+            <form asp-area="Community" asp-controller="Posts" asp-action="Create" method="post">
+                <label for="postContent" class="form-label fw-semibold">شارك شيئاً مع المجتمع</label>
+                <textarea id="postContent" name="content" class="form-control mb-2" rows="3" maxlength="2000" required
+                          placeholder="ماذا يدور في ذهنك؟"></textarea>
+                <input name="signVideoUrl" class="form-control form-control-sm mb-2" dir="ltr"
+                       placeholder="رابط فيديو بلغة الإشارة (YouTube/Vimeo/MP4) — اختياري"
+                       aria-label="رابط فيديو بلغة الإشارة" />
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-8">
+                        <input name="imageUrl" class="form-control form-control-sm" dir="ltr"
+                               placeholder="رابط صورة (اختياري) https://..." />
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <button type="submit" class="btn btn-primary px-4">نشر</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-light border d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+        <span>سجّل الدخول لتشارك منشوراتك وتتفاعل مع المجتمع.</span>
+        <a class="btn btn-sm btn-primary" asp-area="Account" asp-controller="Account" asp-action="Login"
+           asp-route-returnUrl="/Community">تسجيل الدخول</a>
+    </div>
+}
+
+@if (Model.Posts.Count == 0)
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+            <h2 class="h5 fw-bold mb-2">لا توجد منشورات بعد</h2>
+            <p class="text-muted mb-0">كن أول من يشارك شيئاً مع المجتمع.</p>
+        </div>
+    </div>
+}
+
+@foreach (var post in Model.Posts)
+{
+    <article class="card border-0 shadow-sm mb-3" id="post-@post.Id">
+        <div class="card-body p-3 p-md-4">
+            <header class="d-flex align-items-start gap-3 mb-3">
+                <div class="avatar-circle">@post.AuthorInitial</div>
+                <div class="flex-grow-1">
+                    <div class="d-flex flex-wrap align-items-center gap-2">
+                        <span class="fw-semibold">@post.AuthorName</span>
+                        @if (post.IsExpertAuthor)
+                        {
+                            <span class="badge text-bg-primary">صاحب تجربة</span>
+                        }
+                        @if (!string.IsNullOrWhiteSpace(post.SignVideoUrl))
+                        {
+                            <span class="badge sign-video-badge">بلغة الإشارة</span>
+                        }
+                    </div>
+                    <div class="small text-muted">@TimeAgo.Format(post.CreatedAt)</div>
+                </div>
+
+                @if (post.CanDelete)
+                {
+                    <form asp-area="Community" asp-controller="Posts" asp-action="Delete" asp-route-id="@post.Id"
+                          method="post" onsubmit="return confirm('هل تريد حذف هذا المنشور؟');">
+                        <button type="submit" class="btn btn-sm btn-link text-danger p-0">حذف</button>
+                    </form>
+                }
+            </header>
+
+            <p class="post-content mb-3">@post.Content</p>
+
+            @if (!string.IsNullOrWhiteSpace(post.SignVideoUrl))
+            {
+                var signVideo = new SignVideoViewModel
+                {
+                    Url = post.SignVideoUrl,
+                    Title = "فيديو بلغة الإشارة لمنشور " + post.AuthorName,
+                    Caption = "نشرها " + post.AuthorName
+                };
+                <partial name="_SignVideo" model="signVideo" />
+            }
+
+            @if (!string.IsNullOrEmpty(post.ImageUrl))
+            {
+                <img src="@post.ImageUrl" alt="صورة مرفقة بالمنشور" class="img-fluid rounded-3 mb-3 post-image" loading="lazy" />
+            }
+
+            <div class="d-flex align-items-center gap-3 border-top pt-3">
+                <form class="js-like-form d-inline" asp-area="Community" asp-controller="Posts" asp-action="ToggleLike"
+                      asp-route-id="@post.Id" method="post">
+                    <button type="submit" class="btn btn-sm js-like-btn @(post.IsLikedByCurrentUser ? "btn-primary" : "btn-outline-primary")">
+                        <span class="js-like-label">@(post.IsLikedByCurrentUser ? "أعجبني" : "إعجاب")</span>
+                        <span class="js-like-count">(@post.LikesCount)</span>
+                    </button>
+                </form>
+                <span class="small text-muted">@ArabicCount.Comments(post.Comments.Count)</span>
+            </div>
+
+            @if (post.Comments.Count > 0)
+            {
+                <ul class="list-unstyled mt-3 mb-0 comment-list">
+                    @foreach (var comment in post.Comments)
+                    {
+                        <li class="mb-2">
+                            <span class="fw-semibold small">@comment.AuthorName</span>
+                            <span class="text-muted small">· @TimeAgo.Format(comment.CreatedAt)</span>
+                            <p class="mb-0 small post-content">@comment.Content</p>
+                        </li>
+                    }
+                </ul>
+            }
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <form class="mt-3" asp-area="Community" asp-controller="Posts" asp-action="AddComment" method="post">
+                    <input type="hidden" name="postId" value="@post.Id" />
+                    <div class="input-group input-group-sm">
+                        <input name="content" class="form-control" maxlength="1000" required
+                               placeholder="اكتب تعليقاً..." aria-label="أضف تعليقاً" />
+                        <button type="submit" class="btn btn-outline-primary">تعليق</button>
+                    </div>
+                </form>
+            }
+        </div>
+    </article>
+}
+
+<partial name="_Pager" model="Model.Pager" />
+
+@section Scripts {
+    <script src="~/js/community.js" asp-append-version="true"></script>
+}

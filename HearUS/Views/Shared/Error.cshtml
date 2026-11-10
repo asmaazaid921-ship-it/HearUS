@@ -1,0 +1,25 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "خطأ";
+}
+
+<div class="text-center py-5">
+    <h1 class="display-6 fw-bold text-danger mb-3">حدث خطأ غير متوقع</h1>
+    <p class="text-muted mb-4">تعذّر إتمام الطلب. يمكنك المحاولة مرة أخرى أو العودة للرئيسية.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p class="small text-muted">
+            معرّف الطلب: <code dir="ltr">@Model.RequestId</code>
+        </p>
+    }
+
+    <a class="btn btn-primary" asp-area="" asp-controller="Home" asp-action="Index">العودة للرئيسية</a>
+</div>
+
+@if (!string.IsNullOrEmpty(Model.RequestId))
+{
+    <div class="alert alert-light border small text-muted">
+        في بيئة التطوير تظهر تفاصيل الخطأ للمساعدة في التشخيص. لا تُفعّل بيئة التطوير في النشر النهائي.
+    </div>
+}

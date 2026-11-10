@@ -1,0 +1,60 @@
+@model InsightDetailsDto
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<nav aria-label="مسار التنقل" class="mb-3">
+    <ol class="breadcrumb small mb-0">
+        <li class="breadcrumb-item">
+            <a asp-area="Insights" asp-controller="Home" asp-action="Index">ركن صوتهم</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Title</li>
+    </ol>
+</nav>
+
+<article class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 small text-muted">
+            <span class="badge text-bg-primary">@Model.Category.ToArabicName()</span>
+            <span>@Model.AuthorName</span>
+            <span>·</span>
+            <span>@((Model.PublishedAt ?? Model.CreatedAt).ToString("d MMMM yyyy"))</span>
+            @if (!Model.IsPublished)
+            {
+                <span class="badge text-bg-secondary">مسودة</span>
+            }
+        </div>
+
+        <h1 class="h2 fw-bold mb-3">@Model.Title</h1>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Summary))
+        {
+            <p class="lead text-muted">@Model.Summary</p>
+        }
+
+        @if (!string.IsNullOrWhiteSpace(Model.SignVideoUrl))
+        {
+            var signVideo = new SignVideoViewModel
+            {
+                Url = Model.SignVideoUrl,
+                Title = "فيديو بلغة الإشارة لمقال " + Model.Title
+            };
+            <partial name="_SignVideo" model="signVideo" />
+        }
+
+        <hr />
+
+        <div class="post-content">@Model.Content</div>
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            @if (User.IsInRole(AppRoles.Expert) || User.IsInRole(AppRoles.Admin))
+            {
+                <a class="btn btn-sm btn-outline-primary" asp-area="Insights" asp-controller="Insights"
+                   asp-action="Edit" asp-route-id="@Model.Id">تعديل المقال</a>
+            }
+            <a class="btn btn-sm btn-outline-secondary" asp-area="Insights" asp-controller="Home" asp-action="Index">
+                العودة للركن
+            </a>
+        </div>
+    </div>
+</article>

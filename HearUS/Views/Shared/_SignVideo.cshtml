@@ -1,0 +1,37 @@
+@model SignVideoViewModel
+@using HearUS.Application.Common.Video
+@{
+    var embed = VideoEmbed.Parse(Model.Url);
+}
+
+@if (embed is not null)
+{
+    <figure class="sign-video mb-3">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+            <span class="sign-video-badge">بلغة الإشارة</span>
+            @if (!string.IsNullOrWhiteSpace(Model.Caption))
+            {
+                <span class="small text-muted">@Model.Caption</span>
+            }
+        </div>
+
+        @if (embed.EmbedUrl is not null)
+        {
+            <div class="ratio ratio-16x9 rounded-3 overflow-hidden border sign-video-frame">
+                <iframe src="@embed.EmbedUrl" title="@Model.Title" loading="lazy"
+                        allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            </div>
+        }
+        else
+        {
+            <video class="w-100 rounded-3 border sign-video-player" controls preload="metadata" src="@embed.FileUrl">
+                <a href="@embed.FileUrl">فتح الفيديو</a>
+            </video>
+        }
+
+        <figcaption class="small mt-2">
+            <a href="@embed.ExternalUrl" target="_blank" rel="noopener noreferrer">فتح الفيديو في نافذة جديدة</a>
+        </figcaption>
+    </figure>
+}

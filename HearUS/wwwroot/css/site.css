@@ -1,0 +1,337 @@
+:root {
+  --brand: #0f766e;
+  --brand-dark: #115e59;
+  --brand-soft: #ccfbf1;
+  --ink: #0f172a;
+}
+
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, "Noto Kufi Arabic", "Arial", sans-serif;
+  color: var(--ink);
+  background-color: #f8fafc;
+}
+
+a {
+  color: var(--brand);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--brand-dark);
+}
+
+.btn-primary {
+  --bs-btn-bg: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand-dark);
+  --bs-btn-hover-border-color: var(--brand-dark);
+  --bs-btn-active-bg: var(--brand-dark);
+  --bs-btn-active-border-color: var(--brand-dark);
+  --bs-btn-disabled-bg: var(--brand);
+  --bs-btn-disabled-border-color: var(--brand);
+}
+
+.btn-outline-primary {
+  --bs-btn-color: var(--brand);
+  --bs-btn-border-color: var(--brand);
+  --bs-btn-hover-bg: var(--brand);
+  --bs-btn-hover-border-color: var(--brand);
+  --bs-btn-active-bg: var(--brand-dark);
+  --bs-btn-active-border-color: var(--brand-dark);
+}
+
+.text-bg-primary {
+  background-color: var(--brand) !important;
+}
+
+.brand-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.85rem;
+  background: linear-gradient(135deg, var(--brand), #14b8a6);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+.brand-subtitle {
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+.navbar .nav-link.active {
+  color: var(--brand) !important;
+  border-bottom: 2px solid var(--brand);
+}
+
+.hero {
+  background: linear-gradient(135deg, #0f766e 0%, #0e7490 55%, #1d4ed8 100%);
+  color: #fff;
+  border-radius: 1.25rem;
+  padding: 3.5rem 2rem;
+}
+
+.hero .lead {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero-badge {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+}
+
+.feature-card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 1rem 2rem rgba(15, 23, 42, 0.08) !important;
+}
+
+.feature-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 1rem;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.auth-card {
+  border-top: 4px solid var(--brand) !important;
+}
+
+.profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--brand), #14b8a6);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+.coming-soon {
+  max-width: 40rem;
+  margin: 4rem auto;
+  text-align: center;
+}
+
+.avatar-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background: var(--brand-soft);
+  color: var(--brand-dark);
+  font-weight: 700;
+}
+
+.post-content {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+}
+
+.post-image {
+  max-height: 32rem;
+  width: 100%;
+  object-fit: cover;
+}
+
+.comment-list {
+  border-right: 3px solid var(--brand-soft);
+  padding-right: 0.9rem;
+}
+
+.insight-category-dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  display: inline-block;
+  background: var(--brand);
+}
+
+.job-badge {
+  background: #eef2ff;
+  color: #3730a3;
+}
+
+.chat-bubble {
+  border-radius: 1rem;
+  padding: 0.6rem 0.9rem;
+  max-width: 32rem;
+  overflow-wrap: anywhere;
+  white-space: pre-line;
+}
+
+.chat-bubble-own {
+  background: var(--brand);
+  color: #fff;
+  border-bottom-left-radius: 0.25rem;
+}
+
+.chat-bubble-other {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.chat-thread {
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.sign-video {
+  max-width: 48rem;
+}
+
+.sign-video-frame,
+.sign-video-player {
+  background: #000;
+}
+
+.sign-video-player {
+  max-height: 30rem;
+}
+
+.sign-video-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.a11y-bar {
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  padding: 0.35rem 0;
+}
+
+.a11y-bar .btn.active {
+  background: var(--brand);
+  border-color: var(--brand);
+  color: #fff;
+}
+
+/* تكبير الخط */
+html.a11y-large-text {
+  font-size: 18px;
+}
+
+@media (min-width: 768px) {
+  html.a11y-large-text {
+    font-size: 20px;
+  }
+}
+
+/* التباين العالي */
+html.a11y-high-contrast body {
+  background: #000;
+  color: #fff;
+}
+
+html.a11y-high-contrast .navbar,
+html.a11y-high-contrast footer,
+html.a11y-high-contrast .a11y-bar,
+html.a11y-high-contrast .card,
+html.a11y-high-contrast .card-header,
+html.a11y-high-contrast .card-footer,
+html.a11y-high-contrast .dropdown-menu,
+html.a11y-high-contrast .alert,
+html.a11y-high-contrast .modal-content {
+  background: #000 !important;
+  color: #fff !important;
+  border-color: #fff !important;
+}
+
+html.a11y-high-contrast .text-muted,
+html.a11y-high-contrast .text-secondary,
+html.a11y-high-contrast .form-text,
+html.a11y-high-contrast .breadcrumb-item.active {
+  color: #e5e7eb !important;
+}
+
+html.a11y-high-contrast a,
+html.a11y-high-contrast .nav-link {
+  color: #67e8f9 !important;
+}
+
+html.a11y-high-contrast .nav-link.active {
+  color: #fde047 !important;
+  border-bottom-color: #fde047;
+}
+
+html.a11y-high-contrast .hero {
+  background: #000;
+  border: 2px solid #fff;
+}
+
+html.a11y-high-contrast .hero .lead,
+html.a11y-high-contrast .hero-badge {
+  color: #fff !important;
+}
+
+html.a11y-high-contrast .form-control,
+html.a11y-high-contrast .form-select {
+  background: #000;
+  color: #fff;
+  border-color: #fff;
+}
+
+html.a11y-high-contrast .form-control::placeholder {
+  color: #cbd5e1;
+}
+
+html.a11y-high-contrast .btn-outline-secondary,
+html.a11y-high-contrast .btn-outline-primary {
+  color: #fff;
+  border-color: #fff;
+}
+
+html.a11y-high-contrast .btn-primary {
+  --bs-btn-bg: #facc15;
+  --bs-btn-border-color: #facc15;
+  --bs-btn-color: #000;
+  --bs-btn-hover-bg: #fde047;
+  --bs-btn-hover-border-color: #fde047;
+  --bs-btn-hover-color: #000;
+  --bs-btn-active-bg: #eab308;
+  --bs-btn-active-border-color: #eab308;
+  --bs-btn-active-color: #000;
+}
+
+html.a11y-high-contrast .chat-bubble-other {
+  background: #111;
+  border-color: #fff;
+}
+
+html.a11y-high-contrast .sign-video-badge,
+html.a11y-high-contrast .job-badge {
+  background: #facc15;
+  color: #000;
+}
+
+

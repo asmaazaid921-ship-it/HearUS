@@ -1,0 +1,46 @@
+@model InsightFormViewModel
+
+<div asp-validation-summary="ModelOnly" class="text-danger small mb-3"></div>
+
+<div class="mb-3">
+    <label asp-for="Title" class="form-label"></label>
+    <input asp-for="Title" class="form-control" maxlength="150" />
+    <span asp-validation-for="Title" class="text-danger small"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Category" class="form-label"></label>
+    <select asp-for="Category" class="form-select">
+        @foreach (var category in Enum.GetValues<InsightCategory>())
+        {
+            <option value="@category">@category.ToArabicName()</option>
+        }
+    </select>
+    <span asp-validation-for="Category" class="text-danger small"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Summary" class="form-label"></label>
+    <textarea asp-for="Summary" class="form-control" rows="2" maxlength="500"></textarea>
+    <div class="form-text">يظهر في بطاقة المقال وفي أعلى صفحة القراءة.</div>
+    <span asp-validation-for="Summary" class="text-danger small"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="SignVideoUrl" class="form-label"></label>
+    <input asp-for="SignVideoUrl" class="form-control" dir="ltr" placeholder="https://www.youtube.com/watch?v=..." maxlength="500" />
+    <div class="form-text">رابط YouTube أو Vimeo أو ملف فيديو مباشر (mp4/webm/ogg). موصى به لضمان وصول الصم لمحتوى المقال.</div>
+    <span asp-validation-for="SignVideoUrl" class="text-danger small"></span>
+</div>
+
+<div class="mb-3">
+    <label asp-for="Content" class="form-label"></label>
+    <textarea asp-for="Content" class="form-control" rows="12"></textarea>
+    <span asp-validation-for="Content" class="text-danger small"></span>
+</div>
+
+<div class="form-check mb-4">
+    <input asp-for="IsPublished" class="form-check-input" />
+    <label asp-for="IsPublished" class="form-check-label"></label>
+    <div class="form-text">أزل التحديد لحفظ المقال كمسودة لا يراها المجتمع.</div>
+</div>

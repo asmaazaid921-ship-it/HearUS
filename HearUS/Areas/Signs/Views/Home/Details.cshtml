@@ -1,0 +1,56 @@
+@model SignTermDetailsDto
+@{
+    ViewData["Title"] = Model.Term;
+}
+
+<nav aria-label="مسار التنقل" class="mb-3">
+    <ol class="breadcrumb small mb-0">
+        <li class="breadcrumb-item">
+            <a asp-area="Signs" asp-controller="Home" asp-action="Index">قاموس الإشارة</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">@Model.Term</li>
+    </ol>
+</nav>
+
+<article class="card border-0 shadow-sm">
+    <div class="card-body p-4 p-md-5">
+        <div class="d-flex flex-wrap align-items-center gap-2 mb-2 small text-muted">
+            <span class="badge sign-video-badge">@Model.Category.ToArabicName()</span>
+            <span>أضافها @Model.AuthorName</span>
+            <span>·</span>
+            <span>@Model.CreatedAt.ToLocalTime().ToString("d MMMM yyyy")</span>
+            @if (Model.UpdatedAt.HasValue)
+            {
+                <span class="badge text-bg-light text-dark">محدّثة</span>
+            }
+        </div>
+
+        <h1 class="h2 fw-bold mb-3">@Model.Term</h1>
+
+        @if (!string.IsNullOrWhiteSpace(Model.Description))
+        {
+            <p class="lead text-muted">@Model.Description</p>
+        }
+
+        @{
+            var signVideo = new SignVideoViewModel
+            {
+                Url = Model.VideoUrl,
+                Title = "إشارة " + Model.Term,
+                Caption = Model.Category.ToArabicName()
+            };
+        }
+        <partial name="_SignVideo" model="signVideo" />
+
+        <div class="d-flex flex-wrap gap-2 mt-4">
+            @if (User.IsInRole(AppRoles.Expert) || User.IsInRole(AppRoles.Admin))
+            {
+                <a class="btn btn-sm btn-outline-primary" asp-area="Signs" asp-controller="Terms"
+                   asp-action="Edit" asp-route-id="@Model.Id">تعديل الإشارة</a>
+            }
+            <a class="btn btn-sm btn-outline-secondary" asp-area="Signs" asp-controller="Home" asp-action="Index">
+                العودة للقاموس
+            </a>
+        </div>
+    </div>
+</article>
